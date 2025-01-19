@@ -13,7 +13,6 @@ public class Main {
             int length = code.length();  // 암호문의 길이
 
             int[] cnt = new int[26];  // 알파벳 개수 저장 배열
-            boolean duplicate = false;  // 가장 빈번한 알파벳이 복수 개인가?
 
             // 암호문 속 모든 문자의 개수를 확인
             for(int j = 0; j < length; j++) {
@@ -26,6 +25,7 @@ public class Main {
             // 알파벳 개수 배열에서 가장 큰 숫자 찾기
             int max = 0;
             int idx = 0;
+            boolean duplicate = false;  // 가장 빈번한 알파벳이 복수 개인가?
             for(int k = 0; k < 26; k++) {
                 // 최댓값을 찾으면
                 if(cnt[k] > max) {
