@@ -1,0 +1,19 @@
+import java.util.*;
+
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int x = sc.nextInt();
+        int[] a= new int[x];
+        int[] b= new int[x];
+        
+        for (int i=0; i<x; i++){
+            a[i]=sc.nextInt();
+            b[i]=sc.nextInt();
+        }
+        
+        for (int i=0; i<x; i++){
+            System.out.println("Case #"+(i+1)+": "+(a[i]+b[i]));
+        }
+    }
+}
