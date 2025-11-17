@@ -4,41 +4,50 @@ import java.io.InputStreamReader;
 import java.util.Stack;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		
+		int n = Integer.parseInt(br.readLine());
+		
+		Stack<Integer> stack = new Stack<>();
 
-        Stack<Integer> stack = new Stack<>();
-        int point = 1;  //1~n의 수
-        int n = Integer.parseInt(br.readLine());  //수열 길이
-
-        //목표 수열 생성
-        int[] goal = new int[n];
-        for(int i = 0; i < n; i++) {
-            goal[i] = Integer.parseInt(br.readLine());
-        }
-
-        for(int i = 0; i < n; i++) {
-            if(goal[i]>=point){  //목표 수열의 현재 위치 값과 같을 때까지 push
-                while(goal[i] >= point){
-                    stack.push(point++);
-                    sb.append("+").append("\n");
-                }
-            }
-
-            if(goal[i] < point){
-                if(stack.peek()!=goal[i]){  //목표 수열 생성 불가
-                    System.out.println("NO");
-                    return;
-                }
-            }
-
-            stack.pop();
-            sb.append("-").append("\n");
-
-        }
-
-        System.out.println(sb);
-        br.close();
-    }
+		int now = 0;  // 현재까지 넣은 수
+		
+		// 1~n을 스택 연산 했을 때, 주어진 수열이 나올까?
+		for(int i=0; i<n; i++) {
+			int num = Integer.parseInt(br.readLine());  // 수열 입력
+			
+			if(num>now) {  // 현재 수 보다 num이 크다면 현재 수~num까지 push
+				for(int j=now+1; j<=num; j++) {  // num까지 push
+					stack.push(j);
+					sb.append("+\n");
+					now++;
+				}
+				// 맨 위값 pop
+				if(stack.pop()==num) {  // pop이 잘 됐으면 -
+					sb.append("-\n");
+				}
+				else {
+					sb.setLength(0);  // pop이 안됐으면 'no'
+					sb.append("NO");
+					break;
+				}
+				
+			}
+			// 이미 num보다 큰 수까지 push 된 상태이므로 pop
+			else if(num<=now) {
+				if(stack.pop()==num) {
+					sb.append("-\n");
+				}
+				else {
+					sb.setLength(0);
+					sb.append("NO");
+					break;
+				}
+			}
+		}
+		System.out.println(sb.toString());
+	}
 }
