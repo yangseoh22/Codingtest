@@ -1,30 +1,28 @@
-import java.util.*;
+import java.util.Scanner;
 
-public class Main{
-    public static void main(String[] args){
-        Scanner s = new Scanner(System.in);
-        
-        //과목 개수 입력받고 그 크기의 배열 생성
-        int n = s.nextInt();
-        int[] score = new int[n];
-        
-        //성적 입력받기
-        for(int i=0;i<n;i++) {
-        	score[i]=s.nextInt();
-        }
-        
-        //최고 성적 구하기
-        int m = score[0];
-        for(int i=1;i<n;i++) {
-        	if(m<score[i]) m=score[i];
-        }
-        
-        //새로운 평균 구하기
-        float sum = 0;
-        for(int i=0;i<n;i++) {
-            sum += (float)score[i]/m*100;
-        }
-        float result = (float)sum/n;
-        System.out.println(result);
-    }
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		// 과목의 개수
+		int n = sc.nextInt();
+		int[] score = new int[n];
+		
+		double max = 0;  // 최대값
+		
+		for (int i=0; i<n; i++) {
+			int tmp = sc.nextInt(); 
+			score[i] = tmp;  // 점수 입력
+			
+			if (max < tmp) max = tmp;
+		}
+		
+		// 점수 변환 및 평균 계산
+		double sum = 0;
+		for (int i=0; i<n; i++) {
+			sum += (score[i]/max)*100.0;
+		}
+		
+		System.out.println(sum/n);
+	}
 }
