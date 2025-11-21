@@ -27,11 +27,13 @@ public class Solution {
 			int dump = 0;  // 덤프 횟수
 			int min = 0 ;  // 최소값 위치
 			int max = 99;  // 최대값 위치
-			while(stop>dump) {
+			for(int i=0; i<stop; i++) {
 				box[min]++;
 				box[max]--;
 				dump++;
 				Arrays.sort(box);
+				
+				if(box[max]-box[min] <= 1) break;
 			}
 			
 			System.out.printf("#%d %d\n", test_case, box[max]-box[min]);
