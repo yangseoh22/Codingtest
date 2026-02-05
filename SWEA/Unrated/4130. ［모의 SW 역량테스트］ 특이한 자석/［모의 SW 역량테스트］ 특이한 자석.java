@@ -4,8 +4,8 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Solution {
-	public static int[][] gears;  // 자석 상태
-
+	public static int[][] gears;
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
@@ -57,38 +57,38 @@ public class Solution {
 			    // 파악해둔 방향으로 회전
 			    for (int j = 0; j < 4; j++) {
 			        if (rotateDirs[j] == 1) {
-			            rightRotate(gears, j);
+			            rightRotate(j);
 			        } else if (rotateDirs[j] == -1) {
-			            leftRotate(gears, j);
+			            leftRotate(j);
 			        }
 			    }
 
 			}
-			sb.append(calScore(gears)).append("\n");
+			sb.append(calScore()).append("\n");
 		}
 		System.out.println(sb);
 	}
 
 	// 자석을 시계방향 회전
-	public static void rightRotate(int[][] arr, int num) {
-		int tmp = arr[num][7];
+	public static void rightRotate(int num) {
+		int tmp = gears[num][7];
 		for (int i = 7; i > 0; i--) {
-			gears[num][i] = arr[num][i - 1];
+			gears[num][i] = gears[num][i - 1];
 		}
 		gears[num][0] = tmp;
 	}
 	
 	// 자석을 반시계방향 회전
-	public static void leftRotate(int[][] arr, int num) {
-		int tmp = arr[num][0];
+	public static void leftRotate(int num) {
+		int tmp = gears[num][0];
 		for (int i = 0; i < 7; i++) {
-			gears[num][i] = arr[num][i + 1];
+			gears[num][i] = gears[num][i + 1];
 		}
 		gears[num][7] = tmp;
 	}
 	
 	// 점수 계산
-	private static int calScore(int[][] result) {
+	private static int calScore() {
 		int total = 0;
 		
 		for (int i = 0; i < 4; i++) {
