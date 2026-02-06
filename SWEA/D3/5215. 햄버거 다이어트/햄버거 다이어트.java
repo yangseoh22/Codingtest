@@ -34,7 +34,7 @@ public class Solution {
 				arr[i][1] = Integer.parseInt(st.nextToken());
 			}
 			
-			makeSubSet(0,0);
+			bitmasking();
 			
 			// 부분 집합 찾기
 			sb.append(max).append("\n");
@@ -43,36 +43,25 @@ public class Solution {
 		System.out.println(sb);
 	}
 	
-	// cnt: 재귀의 깊이, pickCnt : 부분 집합에 들어가는 원소 수
-	private static void makeSubSet(int cnt, int pickCnt){
-
-		if(cnt == N) {
+	private static void bitmasking() {
+		// 모든 부분 집합의 경우의 수 2^N
+		for(int i=0; i<(1<<N); i++) {
 			int totalScore = 0;
 			int totalCal = 0;
 			
-			for(int i=0; i<N; i++) {
-				// 선택된 부분 집합의 점수와 칼로리 계산
-				if(isSelected[i]) {
-					totalScore += arr[i][0];
-					totalCal += arr[i][1];
+			// i에 각 원소(j)가 포함되었는지 검사
+			for(int j=0; j<N; j++) {
+				// j번재 원소가 포함되었으면 합계
+				if((i & (1<<j)) != 0) {
+					totalScore += arr[j][0];
+					totalCal += arr[j][1];
 				}
 			}
-			
-			// 공집합이 아니면서 L칼로리 이하인 조합일 경우, 점수의 최대값 갱신
-			if(pickCnt>0 && totalCal<L) {
+			// 총 칼로리가 L보다 작으면 최대 점수 갱신
+			if(totalCal<L) {
 				max = Math.max(totalScore, max);
 			}
-			
-			return;
 		}
-		
-		// 원소를 선택할 경우
-		isSelected[cnt] = true;
-		makeSubSet(cnt+1, pickCnt+1);
-		
-		// 원소를 선택하지 않은 경우
-		isSelected[cnt] = false;
-		makeSubSet(cnt+1, pickCnt);
 	}
 
 }
