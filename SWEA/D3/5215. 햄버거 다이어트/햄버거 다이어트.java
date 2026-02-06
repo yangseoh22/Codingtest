@@ -36,7 +36,7 @@ public class Solution {
 			
 			makeSubSet(0,0);
 			
-			// 조합 찾기
+			// 부분 집합 찾기
 			sb.append(max).append("\n");
 		}
 		
@@ -51,7 +51,7 @@ public class Solution {
 			int totalCal = 0;
 			
 			for(int i=0; i<N; i++) {
-				// 선택된 조합의 점수와 칼로리 계산
+				// 선택된 부분 집합의 점수와 칼로리 계산
 				if(isSelected[i]) {
 					totalScore += arr[i][0];
 					totalCal += arr[i][1];
