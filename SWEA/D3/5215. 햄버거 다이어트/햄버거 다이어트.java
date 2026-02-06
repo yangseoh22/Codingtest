@@ -4,59 +4,75 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Solution {
-	static int N, L;
-	static int scores[];
-	static int cals[];
-	static int max;
+	
+	static int N, L, max;
+	static int[][] arr;
+	static boolean[] isSelected;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
 		
-		int T = Integer.parseInt(br.readLine());
+		int TC = Integer.parseInt(br.readLine());
 		
-		for(int test_case = 1; test_case <= T; test_case++)
-		{
+		for(int t=1; t<=TC; t++) {
+			sb.append("#").append(t).append(" ");
+			
 			st = new StringTokenizer(br.readLine());
-			N = Integer.parseInt(st.nextToken());  // 재료 수
-			L = Integer.parseInt(st.nextToken());  // 제한 칼로리
-			max = 0;
+			N = Integer.parseInt(st.nextToken());
+			L = Integer.parseInt(st.nextToken());
+			max = Integer.MIN_VALUE;
 			
-			scores = new int[N];
-			cals = new int[N];
+			arr = new int[N][2];
+			isSelected = new boolean[N];
 			
-			// 재료별 맛과 칼로리
+			// 재료, 칼로리 입력
 			for(int i=0; i<N; i++) {
 				st = new StringTokenizer(br.readLine());
-				scores[i] = Integer.parseInt(st.nextToken());  // 맛
-				cals[i] = Integer.parseInt(st.nextToken());  // 칼로리
+				arr[i][0] = Integer.parseInt(st.nextToken());
+				arr[i][1] = Integer.parseInt(st.nextToken());
 			}
 			
-			DFS(0, 0, 0);
-			System.out.printf("#%d %d\n", test_case, max);
+			makeSubSet(0,0);
+			
+			// 조합 찾기
+			sb.append(max).append("\n");
 		}
+		
+		System.out.println(sb);
 	}
+	
+	// cnt: 재귀의 깊이, pickCnt : 부분 집합에 들어가는 원소 수
+	private static void makeSubSet(int cnt, int pickCnt){
 
-	// idx : 현재 비교할 재료 번호
-	// sc : 지금가지 선택한 재료들의 맛 점수 합
-	// cal : 지금가지 선택한 재료들의 칼로리  합
-	private static void DFS(int idx, int sc, int cal) {
-		
-		// 가지치기 (칼로리 합이 L을 넘으면 종료
-		if(cal>L) return;
-		
-		// 모든 재료를 다 봤으면 종료
-		if(idx==N) {
-			// 현재 칼로리합이 최대값보다 크면 갱신
-			max = Math.max(max, sc);
+		if(cnt == N) {
+			int totalScore = 0;
+			int totalCal = 0;
+			
+			for(int i=0; i<N; i++) {
+				// 선택된 조합의 점수와 칼로리 계산
+				if(isSelected[i]) {
+					totalScore += arr[i][0];
+					totalCal += arr[i][1];
+				}
+			}
+			
+			// 공집합이 아니면서 L칼로리 이하인 조합일 경우, 점수의 최대값 갱신
+			if(pickCnt>0 && totalCal<L) {
+				max = Math.max(totalScore, max);
+			}
+			
 			return;
 		}
 		
-		// 현재 재료를 햄버거에 넣는 경우
-		DFS(idx+1, sc+scores[idx], cal+cals[idx]);
+		// 원소를 선택할 경우
+		isSelected[cnt] = true;
+		makeSubSet(cnt+1, pickCnt+1);
 		
-		// 현재 재료를 햄버거에 안넣는 경우
-		DFS(idx+1, sc, cal);
+		// 원소를 선택하지 않은 경우
+		isSelected[cnt] = false;
+		makeSubSet(cnt+1, pickCnt);
 	}
 
 }
