@@ -9,7 +9,7 @@ public class Main {
         rect(rowNum, colNum);
     }
 
-    public void rect(int r, int c){
+    public static void rect(int r, int c){
         for(int i=0; i<r; i++){
             for(int j=0; j<c; j++){
                 System.out.print(1);
