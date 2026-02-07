@@ -12,9 +12,9 @@ public class Main {
     public void rect(int r, int c){
         for(int i=0; i<r; i++){
             for(int j=0; j<c; j++){
-                System.out.pirnt(1);
+                System.out.print(1);
             }
-            System.out.prinln();
+            System.out.println();
         }
     }
 }
