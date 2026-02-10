@@ -15,9 +15,9 @@ public class Main {
     }
 
     public static boolean onjeon(int x){
-        if(i%2==0) return false;
-        if(i%10==5) return false;
-        if(i%3==0 && i%9!=0) return false;
+        if(x%2==0) return false;
+        if(x%10==5) return false;
+        if(x%3==0 && x%9!=0) return false;
 
         return true;
     }
