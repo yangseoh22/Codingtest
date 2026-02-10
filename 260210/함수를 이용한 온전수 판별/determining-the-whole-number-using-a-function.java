@@ -11,7 +11,7 @@ public class Main {
             if(onjeon(i)) cnt++;
         }
 
-        System.out.println(cnt )
+        System.out.println(cnt);
     }
 
     public static boolean onjeon(int x){
