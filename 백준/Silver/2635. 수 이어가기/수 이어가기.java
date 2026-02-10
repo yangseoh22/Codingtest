@@ -1,64 +1,62 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
 
-        int N = Integer.parseInt(br.readLine());  // 첫 번째 수
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		
+		int N = Integer.parseInt(br.readLine());
+		int[] arr = new int[100];
+		
+		int cnt = 0;  // 수열 길이  
+		int max = Integer.MIN_VALUE;
+		int idx = 0;  // 최대 개수를 얻은 두 번째 요소
+		
+		// 두 번째 수는 양의 정수 중 하나
+		for(int i=N; i>0; i--) {
+			
+			// 첫 번째 수, 두 번째 수 넣기
+			arr[0] = N;
+			arr[1] = i;
+			cnt = 2; // 배열 요소 개수 (이미 첫 번째 수와 두 번째 수가 들어가있음)
+			
+			// 세 번째부터 이후의 수는 모든 앞의 앞의 수에서 앞의 수를 뺌
+			while(true) {
+				int tmp = arr[cnt-2] - arr[cnt-1];
+				
+				if(tmp<0) break;  // 음수가 되면 종료
+				
+				arr[cnt] = tmp;
+				cnt++;
+			}
+			
+			// 최대 개수 구하기
+			if(max<cnt) {
+				max = cnt;
+				idx = i;
+			}
+		}
+		
+		// 수열의 최대 개수 출력
+		sb.append(max).append("\n");
+		
+		// 찾은 두 번째 숫자를 가지고 수열을 다시 생성 -> 출력
+		arr = new int[max];
+		arr[0] = N;
+		arr[1] = idx;
+		sb.append(arr[0]).append(" ").append(arr[1]).append(" ");
+		
+		for(int i=2; i<max; i++) {
+			arr[i] = arr[i-2] - arr[i-1];
+			
+			if(arr[i]<0) break;
+			else sb.append(arr[i]).append(" ");		
+		}
+		
+		System.out.println(sb);
+	}
 
-        // 규칙으로 만든 수열 중 최대 크기를 저장할 배열
-        ArrayList<Integer> result = new ArrayList<>();
-
-        // 최대 크기를 비교하기 위한 배열
-        ArrayList<Integer> tmp = new ArrayList<>();
-
-        // 두 번째 수에 들어갈 수 있는 모든 수를 확인
-        // N보다 큰 수는 모두 3에서 끝나므로 N+1까지 확인
-        // 최대 개수의 수가 만들어지는 배열 찾기
-        int max = 0;
-        for (int i = 1; i <= N+1; i++) {
-            tmp = checking(N, i);
-
-            if (tmp.size() > max) {
-                max = tmp.size();
-                result = tmp;
-            }
-        }
-
-        sb.append(max).append("\n");
-        for(int n : result){
-            sb.append(n+" ");
-        }
-        
-        System.out.println(sb);
-    }
-
-    // 규칙으로 만들어지는 수를 세는 함수
-    public static ArrayList<Integer> checking (int N, int n){
-        int one = N;  // 앞의 앞의 수
-        int two = n;  // 앞의 수
-        int now = one-two;
-
-        // 규칙으로 만든 수들을 저장할 배열
-        ArrayList<Integer> list = new ArrayList<>();
-
-        // 앞의 앞의 수와 앞의 수는 먼저 배열에 추가
-        list.add(one);
-        list.add(two);
-
-        // 세번째 수부터는 규칙을 만족하면 추가
-        while(now>=0){
-            list.add(now);
-
-            one = two;
-            two = now;
-            now = one - two;
-        }
-
-        return list;
-    }
 }
