@@ -20,14 +20,22 @@ public class Main {
 		}
 		
 		int sum = 0;
-		int max = Integer.MIN_VALUE;
-		for(int i=0; i<=N-K; i++) {
-			sum = 0;
-			for(int w=i; w<i+K; w++) {
-				sum += arr[w];
-			}
-			max = Math.max(sum, max);
+		// 초기 윈도우 합계 (처음부터 K개)
+		for(int i=0; i<K; i++) {
+			sum += arr[i];
 		}
+		
+		int max = sum;
+		max = Math.max(max, sum);
+		
+		// 슬라이딩 윈도우
+		for(int i=0; i<N-K; i++) {
+			sum -= arr[i];
+			sum += arr[i+K];
+			
+			max = Math.max(max, sum);
+		}
+		
 		System.out.println(max);
 	}
 
