@@ -21,7 +21,8 @@ public class Main {
 		for(int i=0; i<N; i++) {
 			for(int j=i+1; j<N; j++) {
 				for(int k=j+1; k<N; k++) {
-					if(cow[i]<cow[j] && cow[j]<cow[k]) cnt++;
+					if(cow[i]<=cow[j] && cow[j]<=cow[k]) cnt++;
+                    
 				}
 			}
 		}
