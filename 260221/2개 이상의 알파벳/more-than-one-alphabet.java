@@ -15,7 +15,7 @@ public class Main {
 		}
 		
 		int cnt = 0;
-		for (int i = 0; i < A.length(); i++) {
+		for (int i = 0; i < 26; i++) {
 			if(alpha[i]>0) cnt++;
 		}
 		
