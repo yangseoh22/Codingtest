@@ -10,14 +10,14 @@ public class Main {
         if(n==0) return;
         
         for(int i=0; i<n; i++) {
-        	System.out.print("*");
+        	System.out.print("* ");
         }
         System.out.println();
         
         printStar(n-1);
         
         for(int i=0; i<n; i++) {
-        	System.out.print("*");
+        	System.out.print("* ");
         }
         System.out.println();
     }
