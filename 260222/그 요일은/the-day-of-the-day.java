@@ -29,9 +29,15 @@ public class Main {
         }
         after += d2;
         
-        int diff = after - (before + idx);
+        int diff = after - before;  // 두 날의 차이
+        int cnt = 0;
+        int currIdx = 0;
+        for(int i=0; i<=diff; i++) {
+        	if(currIdx == idx) cnt++;
+        	
+        	currIdx = (currIdx + 1) % 7;
+        }
         
-        System.out.println(diff/7 + 1);
-	
+        System.out.println(cnt);
 	}
 }
