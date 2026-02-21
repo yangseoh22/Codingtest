@@ -22,15 +22,16 @@ public class Main {
         String dayAfter[] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
         String dayAgo[] = {"Mon", "Sun", "Sat", "Fri", "Thu", "Wed", "Tue"};
         
-        int idx = 0;
-        if(b>a) {
-            idx = (b-a)%7;
-            System.out.println(dayAfter[idx]);
-        }
-        else {
-            idx = (a-b)%7;
-            System.out.println(dayAgo[idx]);
-        }
+        int idx = Math.abs(b-a)%7;
+        System.out.println(dayAfter[idx]);
+        // if(b>a) {
+        //     idx = (b-a)%7;
+        //     System.out.println(dayAfter[idx]);
+        // }
+        // else {
+        //     idx = (a-b)%7;
+        //     System.out.println(dayAgo[idx]);
+        // }
         
     }
 }
