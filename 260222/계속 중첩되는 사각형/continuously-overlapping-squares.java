@@ -3,7 +3,7 @@ public class Main {
     public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		final int OFFSET = 100;
-		int[][] map = new int[1000 + OFFSET][1000 + OFFSET];
+		int[][] map = new int[100 + OFFSET][100 + OFFSET];
 
 		int n = sc.nextInt();
         for (int i = 0; i < n; i++) {
