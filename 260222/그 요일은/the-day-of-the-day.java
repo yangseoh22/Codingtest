@@ -29,7 +29,7 @@ public class Main {
         }
         after += d2;
         
-        int diff = after - before - idx;
+        int diff = after - (before + idx);
         
         System.out.println(diff/7 + 1);
 	
