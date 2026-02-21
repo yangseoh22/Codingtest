@@ -10,6 +10,12 @@ public class Main {
         String A = sc.next();
         
         int[] days = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        String[] yoil = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        
+        int idx = 0;
+        for(int i=0; i<7; i++) {
+        	if(yoil[i].equals(A)) idx = i;
+        }
         
         int before = 0;
         for(int i=1; i<m1; i++) {
@@ -23,7 +29,9 @@ public class Main {
         }
         after += d2;
         
-        int diff = after - before;
+        int diff = after - before - idx;
+        
         System.out.println(diff/7 + 1);
+	
 	}
 }
