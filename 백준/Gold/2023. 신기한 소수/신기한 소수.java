@@ -30,7 +30,6 @@ public class Main {
 
 		// 다음 수 구하기 - 2, 4, 6, 8, 5가 오면 무조건 소수가 아니므로 제외
 		for (int i = 1; i <= 9; i += 2) {
-			if(i==5) continue;
 			
 			int newN = n * 10 + i;
 			if (isPrime(newN)) {
@@ -42,7 +41,7 @@ public class Main {
 
 	// 소수 판별
 	private static boolean isPrime(int newN) {
-		for (int i = 2; i*i<newN; i++) {
+		for (int i = 2; i*i<=newN; i++) {
 			if (newN % i == 0)
 				return false;
 		}
