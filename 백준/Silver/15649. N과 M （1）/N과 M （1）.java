@@ -14,9 +14,9 @@ public class Main {
 		
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		A = new int[N];
+		A = new int[M];
 		
-		visited = new boolean[N];
+		visited = new boolean[N+1];
 		backtracking(0);
 		
 		System.out.println(sb);
@@ -40,4 +40,5 @@ public class Main {
 			}
 		}
 	}
+
 }
