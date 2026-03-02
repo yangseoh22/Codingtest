@@ -30,12 +30,14 @@ public class Main {
 			indegree[b]++;
 		}
 		
+        int cnt = 0;
 		for(int i=1; i<=N; i++) {
-			if(indegree[i]==0)
-				q.add(i);
+			if(indegree[i]==0){
+                cnt++;
+                q.add(i);
+            }
 		}
 		
-		int cnt = 1;
 		while(!q.isEmpty()) {
 			int now = q.poll();
 			
