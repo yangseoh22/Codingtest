@@ -11,7 +11,7 @@ public class Main {
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
 
-		Queue<Integer> q = new LinkedList<>();
+		PriorityQueue<Integer> q = new PriorityQueue<>();
 		ArrayList<Integer>[] edges = new ArrayList[N + 1];
 		int[] indegree = new int[N + 1];
 
