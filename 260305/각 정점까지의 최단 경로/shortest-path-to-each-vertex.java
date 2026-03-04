@@ -80,7 +80,7 @@ public class Main {
 				int cost = dist[minIdx] + next.w;
 				if (cost < dist[next.end]) {
 					dist[next.end] = cost;
-					pq.add(new Element(cost, next.w));
+					pq.add(new Element(cost, next.end));
 				}
 			}
 		}
