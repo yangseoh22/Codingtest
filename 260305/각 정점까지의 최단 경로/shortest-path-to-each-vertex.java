@@ -85,12 +85,6 @@ public class Main {
 			}
 		}
 
-		boolean isAll = true;
-		for (int i = 1; i <= N; i++) {
-			if (dist[i] == (int) 1e9)
-				isAll = false;
-		}
-
 		for (int i = 1; i <= N; i++) {
             if (dist[i] == (int)1e9) sb.append("-1").append("\n");
             else sb.append(dist[i]).append("\n");
