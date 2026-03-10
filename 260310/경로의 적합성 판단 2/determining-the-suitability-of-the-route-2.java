@@ -39,14 +39,17 @@ public class Main {
 		
 		// 첫 번째 정점, 두 번째 정점 비교 => 그 다음 정점 비교
 		int prev = find(nodes[0]);
-		boolean isConnected = false;
+		boolean isConnected = true;
 		for(int i=1; i<K; i++) {
-			if(prev != find(nodes[i])) break;
+			if(prev != find(nodes[i])) {
+				isConnected = false;
+				break;
+			}
 			
 			prev = find(nodes[i]);
 		}
 		
-		if(!isConnected) sb.append(1);
+		if(isConnected) sb.append(1);
 		else sb.append(0);
 		
 		System.out.println(sb);
