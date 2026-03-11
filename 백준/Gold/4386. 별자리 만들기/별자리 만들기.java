@@ -1,85 +1,115 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.StringTokenizer;
-
-
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	static class Edge implements Comparable<Edge>{
-		int s, e;
-		double w;
-		public Edge(int s, int e, double w) {
-			this.s = s;
-			this.e = e;
-			this.w = w;
-		}
-		@Override
-		public int compareTo(Edge o) {
-			return Double.compare(this.w, o.w);
+	public static class Point {
+		double x, y;
+
+		public Point(double x, double y) {
+			this.x = x;
+			this.y = y;
 		}
 	}
+
+	public static class Edge implements Comparable<Edge>{
+		int to;
+		double dist;
+
+		public Edge(int to, double dist) {
+			this.to = to;
+			this.dist = dist;
+		}
+		
+		@Override
+		public int compareTo(Edge e) {
+			return Double.compare(this.dist, e.dist);
+		}
+	}
+
+	static int N;
+	static ArrayList<Edge>[] graph;
+	static ArrayList<Point> stars;
+	static int[] starComb;
+	static boolean[] visited;
 	
-	static double[][] stars;
-	static ArrayList<Edge> edges;
-	static int[] uf;  //
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
-		
-		int N = Integer.parseInt(br.readLine());
-		
-		stars = new double[N][3];
+		StringBuilder sb = new StringBuilder();
+
+		N = Integer.parseInt(br.readLine());
+
+		graph = new ArrayList[N+1];
 		for(int i=0; i<N; i++) {
+			graph[i] = new ArrayList<>();
+		}
+		
+		stars = new ArrayList<>();
+		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
-			stars[i][0] = Double.parseDouble(st.nextToken());
-			stars[i][1] = Double.parseDouble(st.nextToken());
+			double starX = Double.parseDouble(st.nextToken());
+			double starY = Double.parseDouble(st.nextToken());
+			stars.add(new Point(starX, starY));
 		}
+
+		// 별을 2개 고르는 조합과 해당 거리 구하기
+		starComb = new int[2];
+		combi(0, 0);
 		
-		edges = new ArrayList<>();
-        for (int i = 0; i < N; i++) {
-            for (int j = i + 1; j < N; j++) {
-                double dist = Math.sqrt(Math.pow(stars[i][0] - stars[j][0], 2) + Math.pow(stars[i][1] - stars[j][1], 2));
-                edges.add(new Edge(i, j, dist));
-            }
-        }
+		visited = new boolean[N];
 		
-		// 서로소 집합 생성
-		uf = new int[N];
-		for(int i=0; i<N; i++) {
-			uf[i] = i;
-		}
+		//prim 알고리즘
+		PriorityQueue<Edge> pq = new PriorityQueue<>();
+		pq.offer(new Edge(0, 0));  // 임의로 0번 별 시작
 		
-		Collections.sort(edges);
-		
-		int cnt = 0;
 		double result = 0;
-		for(Edge ed : edges) {
-			if(union(ed.s, ed.e)) {  //사이클이 발생하지 않는다면,
-				cnt++;  // 연결
-				result += ed.w;  // 가중치 누적
-				if(cnt == N-1) break;
+		while(!pq.isEmpty()) {
+			Edge cur = pq.poll();
+			
+			if(visited[cur.to]) continue;
+			
+			result += cur.dist;
+			visited[cur.to] = true;
+			
+			for(Edge next : graph[cur.to]) {
+				if(!visited[next.to]) {
+					pq.offer(next);
+				}
 			}
 		}
 		
 		System.out.printf("%.2f", result);
 	}
 
-	private static boolean union(int i, int j) {
-		int ns = find(i);
-		int ne = find(j);
-		if(ns==ne) return false;
-		uf[ns] = ne;
-		return true;
+	// N개 중에 2개 고르는 조합 구하기
+	private static void combi(int idx, int start) {
+		if(idx == 2) {
+			calDist(starComb);
+			return;
+		}
+		
+		for(int i=start; i<N; i++) {
+			starComb[idx] = i;
+			combi(idx + 1, i+1);
+		}
 	}
 
-	private static int find(int x) {
-		if(uf[x]==x) return x;
-		int nx = find(uf[x]);
-		uf[x] = nx;
-		return nx;
-	}
+	// 별 조합들의 거리 계산 및 그래프 생성
+	private static void calDist(int[] starList) {
+		// 별들의 거리 계산
+		int starIdx = starList[0];
+		int starNext = starList[1];
 
+		// 두 별의 거리 계산
+		double x1 = stars.get(starIdx).x;
+		double y1 = stars.get(starIdx).y;
+		double x2 = stars.get(starNext).x;
+		double y2 = stars.get(starNext).y;
+
+		double starDist = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
+		
+		// 그래프 생성
+		graph[starIdx].add(new Edge(starNext, starDist));
+		graph[starNext].add(new Edge(starIdx, starDist));
+	}
 }
