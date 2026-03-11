@@ -1,13 +1,24 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
-public class Main{
-	static int[][] graph;
+public class Main {
+	static class Edge implements Comparable<Edge>{
+		int to, w;
+		
+		public Edge(int to, int w) {
+			this.to = to;
+			this.w = w;
+		}
+		
+		@Override
+		public int compareTo(Edge o) {
+			return Integer.compare(this.w, o.w);
+		}
+	}
+	
+	static ArrayList<Edge>[] graph;
 	static boolean[] V;
-	static int[] dist;
 	static int N, M;
-	static final int INF = Integer.MAX_VALUE;
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -15,55 +26,54 @@ public class Main{
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		
-		graph = new int[N+1][N+1];
+		graph = new ArrayList[N+1];
+		for(int i=1; i<=N; i++) {
+			graph[i] = new ArrayList<>();
+		}
+		
 		for(int i=0; i<M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int s = Integer.parseInt(st.nextToken());
 			int e = Integer.parseInt(st.nextToken());
 			int w = Integer.parseInt(st.nextToken());
 			
-			graph[s][e] = w;
-			graph[e][s] = w;
+			graph[s].add(new Edge(e, w));
+			graph[e].add(new Edge(s, w));
 		}
 		
-		dist = new int[N+1];
 		V = new boolean[N+1];
-		for(int i=1; i<=N; i++) {
-			dist[i] = INF;
-		}
-		
-		dist[1] = 0;  // 시작 정점 : 1번
-		
-		int result = prim();
+		int result = prim(1);
 		
 		System.out.println(result);
 	}
-	private static int prim() {
-		int mst = 0;
-		for(int i=1; i<=N; i++) {
+	private static int prim(int start) {
+		PriorityQueue<Edge> pq = new PriorityQueue<>();
+		pq.offer(new Edge(start, 0));
+		
+		int total = 0;
+		int cnt = 0;
+		while(!pq.isEmpty()) {
+			Edge cur = pq.poll();
 			
-			int minIdx = -1;
-			int minVal = INF;
-			for(int j=1; j<=N; j++) {
-				if(!V[j] && dist[j]<minVal) {
-					minVal = dist[j];
-					minIdx = j;
-				}
+			// 방문 노드라면 스킵
+			if(V[cur.to]) continue;
+			
+			// 방문 처리 및 가중치 합산
+			V[cur.to] = true;
+			total += cur.w;
+			cnt++;
+			
+			// 현재 정점과 연결된 간선을 pq에 넣기
+			for(Edge next : graph[cur.to]) {
+				if(!V[next.to])
+					pq.offer(next);
 			}
 			
-			if(minIdx == -1) break;
-			
-			V[minIdx] = true;
-			mst += dist[minIdx];
-			
-			for(int j=1; j<=N; j++) {
-				if(!V[j] && graph[minIdx][j] != 0 && graph[minIdx][j] < dist[j]) {
-					dist[j] = graph[minIdx][j];
-				}
-			}
+			// 모든 정점을 방문했다면 조기 종료
+			if(cnt == N) break;
 		}
 		
-		return mst;
+		return total;
 	}
 
 }
