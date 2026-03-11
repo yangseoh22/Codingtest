@@ -71,7 +71,7 @@ public class Main {
 			
 			// 현재 정점과 연결된 간선을 pq에 넣기
 			for(Edge next : graph[minIdx]) {
-				if(!V[minIdx] && next.w < dist[next.to]) {
+				if(!V[next.to] && next.w < dist[next.to]) {
 					dist[next.to]= next.w;
 					pq.offer(next);
 				}
