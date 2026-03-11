@@ -1,81 +1,89 @@
-import java.util.*;
 import java.io.*;
-
-class Edge implements Comparable<Edge>{
-	int start, end, weight;
-	Edge(int start, int end, int weight){
-		this.start = start;
-		this.end = end;
-		this.weight = weight;
-	}
-	
-	@Override
-	public int compareTo(Edge o) {
-		return Integer.compare(this.weight, o.weight);
-	}
-}
+import java.util.*;
 
 public class Solution {
-	static Edge[] edges;
-	static int[] node;
-	public static void main(String[] args) throws Exception{
+	public static class Edge implements Comparable<Edge>{
+		int to, w;
+		
+		public Edge(int to, int w) {
+			this.to = to;
+			this.w = w;
+		}
+		
+		@Override
+		public int compareTo(Edge e) {
+			return this.w - e.w;
+		}
+	}
+	
+	static int V, E;
+	static ArrayList<Edge>[] graph;
+	static boolean[] visited;
+	static int[] dist;
+	static final int INF = Integer.MAX_VALUE;
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
-
+		
 		int T = Integer.parseInt(br.readLine());
-
-		for (int t = 1; t <= T; t++) {
+		
+		for(int t=1; t<=T; t++) {
 			st = new StringTokenizer(br.readLine());
-			int V = Integer.parseInt(st.nextToken());
-			int E = Integer.parseInt(st.nextToken());
+			V = Integer.parseInt(st.nextToken());
+			E = Integer.parseInt(st.nextToken());
 			
-			edges = new Edge[E];
+			visited = new boolean[V+1];
+			dist = new int[V+1];
+			
+			graph = new ArrayList[V+1];
+			for(int i=1; i<=V; i++) {
+				graph[i] = new ArrayList<>();
+				dist[i] = INF;
+			}
+			
 			for(int i=0; i<E; i++) {
 				st = new StringTokenizer(br.readLine());
-				int s = Integer.parseInt(st.nextToken());
-				int e = Integer.parseInt(st.nextToken());
-				int w = Integer.parseInt(st.nextToken());
+				int start = Integer.parseInt(st.nextToken());
+				int end = Integer.parseInt(st.nextToken());
+				int weight = Integer.parseInt(st.nextToken());
 				
-				edges[i] = new Edge(s, e, w);
+				graph[start].add(new Edge(end, weight));
+				graph[end].add(new Edge(start, weight));
 			}
 			
-			Arrays.sort(edges);
-			
-			node = new int[V+1];
-			for(int i=1; i<=V; i++) {
-				node[i] = i;
-			}
-			
-			int cnt = 0;
-			long result = 0;
-			for(Edge ed : edges) {
-				if(union(ed.start, ed.end)) {
-					cnt++;
-					result += ed.weight;
-					if(cnt == V-1) break;
-				}
-			}
-			
+			long result = prim(1);
 			sb.append("#").append(t).append(" ").append(result).append("\n");
 		}
 		System.out.println(sb);
 	}
-	private static boolean union(int start, int end) {
-		int startN = find(node[start]);
-		int endN = find(node[end]);
+	
+	static public long prim(int start) {
+		PriorityQueue<Edge> pq = new PriorityQueue<>();
+		pq.offer(new Edge(start, 0));
 		
-		if(startN == endN) {
-			return false;
+		int cnt = 0; // 연결 간선 수
+		long total = 0; // 연결 간선들의 가중치 합
+		while(!pq.isEmpty()) {
+			Edge cur = pq.poll();
+			int minIdx = cur.to;
+			int minDist = cur.w;
+			
+			if(visited[minIdx]) continue;
+			
+			visited[minIdx] = true;
+			cnt++;
+			total += minDist;
+			
+			for(Edge next : graph[minIdx]) {
+				if(!visited[next.to] && next.w<dist[next.to]) {
+					dist[next.to] = next.w;
+					pq.offer(new Edge(next.to, next.w));
+				}
+			}
+			
+			if(cnt==V) break;
 		}
-		node[startN] = endN;
-		return true;
+		return total;
 	}
-	private static int find(int x) {
-		if(node[x]==x) return x;
-		int rootN = find(node[x]);
-		node[x] = rootN;
-		return rootN;
-	}	
-
 }
