@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Main{
 	static int[][] graph;
 	static boolean[] V;
 	static int[] dist;
@@ -43,20 +43,23 @@ public class Main {
 		for(int i=1; i<=N; i++) {
 			
 			int minIdx = -1;
+			int minVal = INF;
 			for(int j=1; j<=N; j++) {
-				if(V[j]) continue;
-				
-				if(minIdx == -1 || dist[minIdx] > dist[j]) minIdx = j;
+				if(!V[j] && dist[j]<minVal) {
+					minVal = dist[j];
+					minIdx = j;
+				}
 			}
 			
-			V[minIdx] = true;
+			if(minIdx == -1) break;
 			
+			V[minIdx] = true;
 			mst += dist[minIdx];
 			
 			for(int j=1; j<=N; j++) {
-				if(graph[minIdx][j]==0) continue;
-				
-				dist[j] = Math.min(dist[j], graph[minIdx][j]);
+				if(!V[j] && graph[minIdx][j] != 0 && graph[minIdx][j] < dist[j]) {
+					dist[j] = graph[minIdx][j];
+				}
 			}
 		}
 		
