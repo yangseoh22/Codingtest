@@ -50,8 +50,7 @@ public class M {
 		}
 
 		for (int i = 1; i <= N; i++) {
-			if (i == 1)
-				continue;
+			if (i == 1) continue;
 			if (dist[i] == (int) 1e9)
 				sb.append(-1).append("\n");
 			else {
