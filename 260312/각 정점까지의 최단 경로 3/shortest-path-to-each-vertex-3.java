@@ -22,7 +22,7 @@ public class Main {
 		
 		int[] dist = new int[N+1];
 		for(int i=1; i<=N; i++) {
-			dist[i] = Integer.MAX_VALUE;
+			dist[i] = (int)1e9;
 		}
 		// 시작 정점 1
 		dist[1] = 0;
@@ -50,7 +50,8 @@ public class Main {
 		boolean isGoal = false;
 		for (int i=1; i<=N; i++){
 			if(i==1) continue;
-			if(dist[i]==Integer.MAX_VALUE) {
+			
+			if(dist[i]==(int)1e9) {
 				isGoal = false;
 				break;
 			}
