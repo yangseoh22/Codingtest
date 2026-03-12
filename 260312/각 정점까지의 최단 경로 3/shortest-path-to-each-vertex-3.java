@@ -47,11 +47,22 @@ public class Main {
 			}		
 		}
 		
+		boolean isGoal = false;
 		for (int i=1; i<=N; i++){
 			if(i==1) continue;
-			sb.append(dist[i]).append("\n");
+			if(dist[i]==Integer.MAX_VALUE) {
+				isGoal = false;
+				break;
+			}
+			else {
+				isGoal=true;
+				sb.append(dist[i]).append("\n");
+			}
 		}
 		
-		System.out.println(sb);
+		if(isGoal) {
+			System.out.println(sb);			
+		}
+		else System.out.println(-1);
 	}
 }
