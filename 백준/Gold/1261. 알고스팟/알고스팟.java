@@ -1,86 +1,78 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
+	public static class Node implements Comparable<Node>{
+		int x, y, w;
+		public Node(int x, int y, int w) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+		}
+		
+		@Override
+		public int compareTo(Node n) {
+			return this.w-n.w;
+		}
+	}
+	
 	static int N, M;
-	static int[][] map, dist;
-	static int minDist = Integer.MAX_VALUE;
-	static final int INF = Integer.MAX_VALUE;
+	static final int INF = (int)1e9;
 	static int[] dr = {-1, 1, 0, 0};
 	static int[] dc = {0, 0, -1, 1};
-	public static void main(String[] args) throws Exception {
+	static int[][] map;
+	static int[][] dist;
+	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		StringBuilder sb = new StringBuilder();
 		
 		M = Integer.parseInt(st.nextToken());
 		N = Integer.parseInt(st.nextToken());
-		map = new int[N+1][M+1];
-		dist = new int[N+1][M+1];
-		
-		for(int r=1; r<=N; r++) {
-			String str = br.readLine();
-			for(int c=1; c<=M; c++) {
-				map[r][c] = str.charAt(c-1) - '0';
-			}
-		}
-		
-		for(int r=1; r<=N; r++) {
-			for(int c=1; c<=M; c++) {
+	
+		map = new int[N][M];
+		dist = new int[N][M];
+		for(int r=0; r<N; r++) {
+			String line = br.readLine();
+			for(int c=0; c<M; c++) {
+				map[r][c] = line.charAt(c) - '0';
 				dist[r][c] = INF;
 			}
 		}
 		
-		// 시작점(1, 1)에서 (N, M) 까지 가는 최소 거리(가중치)
-		dist[1][1] = 0;
-		dijk(1, 1);
+		// (0, 0)에서 (N, M)으로
+		dijk(0, 0);
 		
-		System.out.println(dist[N][M]);
+		System.out.println(dist[N-1][M-1]);
 	}
-	
-	private static class Node implements Comparable<Node>{
-		int x, y, d;
+	private static void dijk(int startR, int startC) {
+		PriorityQueue<Node> pq = new PriorityQueue<>();
+		pq.offer(new Node(startR, startC, 0));
+		dist[startR][startC] = 0;
 		
-		public Node(int x, int y, int d) {
-			this.x = x;
-			this.y = y;
-			this.d = d;
-		}
-		
-		// 우선순위 큐가 더 작은 비용 판단
-		@Override
-		public int compareTo(Node o) {
-			return this.d - o.d;
-		}
-	}
-	
-	private static void dijk(int r, int c) {
-		PriorityQueue<Node> q = new PriorityQueue<>();
-		
-		dist[r][c] = 0;
-		q.add(new Node(r, c, 0));
-		
-		while(!q.isEmpty()) {
-			Node curr = q.poll();
+		while(!pq.isEmpty()) {
+			Node curr = pq.poll();
+			int cx = curr.x;
+			int cy = curr.y;
+			int cw = curr.w;
 			
-			if(curr.d > dist[curr.x][curr.y]) continue;
+			if(dist[cx][cy] != cw) continue;
+			
+			if(cx==N-1 && cy==M-1) break;
 			
 			for(int i=0; i<4; i++) {
-				int nr = curr.x + dr[i];
-				int nc = curr.y + dc[i];
+				int nx = cx + dr[i];
+				int ny = cy + dc[i];
 				
-				if(nr>=1 && nc>=1 && nr<=N && nc<=M) {
-					int nextD = curr.d + map[nr][nc];
-					
-					if(dist[nr][nc] > nextD) {
-						dist[nr][nc] = nextD;
-						q.offer(new Node(nr, nc, nextD));
+				if(nx>=0 && ny>=0 && nx<N && ny<M) {
+					int newDist = cw + map[nx][ny];
+					if(dist[nx][ny] > newDist) {
+						dist[nx][ny] = newDist;
+						pq.add(new Node(nx, ny, newDist));
 					}
 				}
 			}
 		}
+		
 	}
-	
+
 }
