@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class M {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -49,15 +49,16 @@ public class Main {
 			}
 		}
 
-		if (dist[N] == (int) 1e9) {
-			sb.append(-1);
-		} else {
-			for (int i = 1; i <= N; i++) {
-				if (i == 1)
-					continue;
+		for (int i = 1; i <= N; i++) {
+			if (i == 1)
+				continue;
+			if (dist[i] == (int) 1e9)
+				sb.append(-1).append("\n");
+			else {
 				sb.append(dist[i]).append("\n");
 			}
 		}
+
 		System.out.println(sb);
 	}
 }
