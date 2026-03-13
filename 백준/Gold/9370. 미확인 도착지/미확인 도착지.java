@@ -84,16 +84,14 @@ public class Main {
 		
 		while(!pq.isEmpty()) {
 			Edge curr = pq.poll();
-			int minIdx = curr.to;
-			int minDist = curr.weight;
 			
-			if(minDist > dist[minIdx]) continue;
+			if(curr.weight != dist[curr.to]) continue;
 			
-			for(Edge next : graph[minIdx]) {
-				int newDist = dist[minIdx] + next.weight;
+			for(Edge next : graph[curr.to]) {
+				int newDist = dist[curr.to] + next.weight;
 				if(newDist < dist[next.to]) {
 					dist[next.to] = newDist;
-					pq.offer(next);
+					pq.offer(new Edge(next.to, newDist));
 				}
 			}
 		}
