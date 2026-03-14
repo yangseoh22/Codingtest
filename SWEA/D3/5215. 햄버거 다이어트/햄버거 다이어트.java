@@ -1,18 +1,25 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Solution {
+	public static class List{
+		int score, cal;
+		public List(int score, int cal) {
+			this.score = score;
+			this.cal = cal;
+		}
+	}
 	
-	static int N, L, max;
-	static int[][] arr;
-	static boolean[] isSelected;
+	static int N, L;
+	static boolean[] selected;
+	static List[] hambug;
+	static ArrayList<Integer> choice;
+	static int maxSum;
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
+		StringBuilder sb = new StringBuilder();
 		
 		int TC = Integer.parseInt(br.readLine());
 		
@@ -22,46 +29,57 @@ public class Solution {
 			st = new StringTokenizer(br.readLine());
 			N = Integer.parseInt(st.nextToken());
 			L = Integer.parseInt(st.nextToken());
-			max = Integer.MIN_VALUE;
 			
-			arr = new int[N][2];
-			isSelected = new boolean[N];
-			
-			// 재료, 칼로리 입력
+			hambug = new List[N];
 			for(int i=0; i<N; i++) {
-				st = new StringTokenizer(br.readLine());
-				arr[i][0] = Integer.parseInt(st.nextToken());
-				arr[i][1] = Integer.parseInt(st.nextToken());
+				st = new StringTokenizer(br.readLine());				
+				int score = Integer.parseInt(st.nextToken());
+				int cal = Integer.parseInt(st.nextToken());
+				
+				hambug[i] = new List(score, cal);
 			}
 			
-			bitmasking();
+			selected = new boolean[N];
+			choice = new ArrayList<>();
+			maxSum = Integer.MIN_VALUE;
+			combi(0);
 			
-			// 부분 집합 찾기
-			sb.append(max).append("\n");
+			
+			sb.append(maxSum).append("\n");
 		}
-		
 		System.out.println(sb);
 	}
-	
-	private static void bitmasking() {
-		// 모든 부분 집합의 경우의 수 2^N
-		for(int i=0; i<(1<<N); i++) {
-			int totalScore = 0;
-			int totalCal = 0;
-			
-			// i에 각 원소(j)가 포함되었는지 검사
-			for(int j=0; j<N; j++) {
-				// j번재 원소가 포함되었으면 합계
-				if((i & (1<<j)) != 0) {
-					totalScore += arr[j][0];
-					totalCal += arr[j][1];
-				}
+	private static void combi(int cnt) {
+		if(cnt == N) {
+			for(int i=0; i<N; i++) {
+				if(selected[i]) choice.add(i);
 			}
-			// 총 칼로리가 L보다 작으면 최대 점수 갱신
-			if(totalCal<L) {
-				max = Math.max(totalScore, max);
-			}
+			if(choice.size()!=0) calScore(choice);
+			choice = new ArrayList<>();  // 초기화 필수!!!
+			return;
 		}
+		
+		selected[cnt] = true;
+		combi(cnt + 1);
+		
+		selected[cnt] = false;
+		combi(cnt + 1);
 	}
-
+	
+	private static void calScore(ArrayList<Integer> arr) {
+		int calSum = 0;
+		int scSum = 0;
+		
+		for(int i=0 ; i<arr.size(); i++) {
+			int idx = arr.get(i);
+			
+			calSum += hambug[idx].cal;
+			scSum += hambug[idx].score;
+			
+			if(calSum>L) return;  // 제한 칼로리 넘으면 무시
+		}
+		
+		// 조합의 칼로리가 L을 넘기지 않으면 갱신
+		maxSum = Math.max(scSum, maxSum);
+	}
 }
