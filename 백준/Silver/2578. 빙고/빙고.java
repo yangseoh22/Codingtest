@@ -1,78 +1,107 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	static int[][] bingo;
-	static boolean[][] checkMap;
-	public static void main(String[] args) throws IOException {
+	static int[][] map;
+	static int N, bingoCnt;
+
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
+		StringBuilder sb = new StringBuilder();
+
+		N = 5;
 		
-		// 빙고판 채우기
-		bingo = new int[5][5];
-		for(int i=0; i<5; i++) {
+		
+		map = new int[N][N];
+		for (int r = 0; r < N; r++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j=0; j<5; j++) {
-				bingo[i][j] = Integer.parseInt(st.nextToken());
+			for (int c = 0; c < N; c++) {
+				map[r][c] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
-		// 사회자의 숫자 외침
-		boolean flag = false;  // 빙고 여부
-		int callCnt = 0;
-		int num = 0;
-		checkMap = new boolean[5][5];
-		for(int i=0; i<5; i++) {
-			if(flag) break;
+
+		int cnt = 0;
+		boolean flag = false;
+		for (int r = 0; r < N; r++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j=0; j<5; j++) {
-				num = Integer.parseInt(st.nextToken());
-				findNum(num);
-				callCnt++;
-				if(checking()>=3) {
-					flag = true;
+			for (int c = 0; c < N; c++) {
+				int mc = Integer.parseInt(st.nextToken()); // 사회자가 부른 숫자
+				cnt++;
+
+				// 빙고 확인
+				flag = checking(mc);
+				if(flag) break;
+			}
+			if(flag) {
+				sb.append(cnt).append("\n");
+				break;
+			}
+		}
+
+		System.out.println(sb);
+	}
+
+	private static boolean checking(int target) {
+
+		findNum(target);
+		bingoCnt = 0;
+		
+		// 가로 검사
+		int garo = 0;
+		for (int r = 0; r < N; r++) {
+			garo = 0;
+			for (int c = 0; c < N; c++) {
+				if (map[r][c] != 0)
 					break;
+				garo++;
+			}
+			if (garo == 5) bingoCnt++;
+		}
+
+		// 세로 검사
+		int sero = 0;
+		for (int c = 0; c < N; c++) {
+			sero = 0;
+			for (int r = 0; r < N; r++) {
+				if (map[r][c] != 0)
+					break;
+				sero++;
+			}
+			if (sero == 5) bingoCnt++;
+		}
+
+		// 하향 대각선 검사
+		int downD = 0;
+		for (int r = 0; r < N; r++) {
+			if (map[r][r] != 0)
+				break;
+			downD++;
+		}
+		if (downD == 5) bingoCnt++;
+
+		// 상향 대각선 검사
+		int upD = 0;
+		for (int r = 0; r < N; r++) {
+			if (map[4-r][r] != 0)
+				break;
+			upD++;
+		}
+		if (upD == 5) bingoCnt++;
+
+		if(bingoCnt>=3) return true;
+		else return false;
+	}
+
+	private static void findNum(int target) {
+		for (int r = 0; r < N; r++) {
+			for (int c = 0; c < N; c++) {
+				if (map[r][c] == target) {
+					map[r][c] = 0;
+					return;
 				}
 			}
 		}
-		
-		System.out.println(callCnt);
-	}
-	
-	// 부른 숫자가 있는 칸 위치를 true
-	private static void findNum(int n) {
-		for(int r = 0; r<5; r++) {
-			for(int c = 0; c<5; c++) {
-				if(bingo[r][c] == n)
-					checkMap[r][c] = true;
-			}
-		}
-	}
-
-	// 빙고 줄 확인
-	private static int checking() {
-		int cnt = 0;
-		// 가로 세로 확인
-		for(int r = 0; r<5; r++) {
-			int garo = 0;
-			int sero = 0;
-			for(int c = 0; c<5; c++) {
-				if(checkMap[r][c]) garo++;
-				if(checkMap[c][r]) sero++;
-			}
-			
-			// 5개 연속으로 있음 = 한 줄 빙고
-			if(garo==5) cnt++;
-			if(sero==5) cnt++;
-		}
-		
-		// 대각선 확인
-		if(checkMap[0][0]&&checkMap[1][1]&&checkMap[2][2]&&checkMap[3][3]&&checkMap[4][4]) cnt++;
-		if(checkMap[0][4]&&checkMap[1][3]&&checkMap[2][2]&&checkMap[3][1]&&checkMap[4][0]) cnt++;
-		
-		return cnt;
 	}
 
 }
