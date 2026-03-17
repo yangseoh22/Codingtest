@@ -31,7 +31,7 @@ public class Main {
 	}
 	
 	public static boolean dfs (int r, int c) {
-		if(r<0 && r>=N && c<0 && c>=M && map[r][c] == 0) return false;
+		if(r<0 || r>=N || c<0 || c>=M || map[r][c] == 0) return false;
 		
 		if(r==N-1 && c==M-1) return true;
 	
