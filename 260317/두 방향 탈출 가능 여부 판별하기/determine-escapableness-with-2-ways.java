@@ -39,7 +39,7 @@ public class Main {
 			int nr = r + dr[i];
 			int nc = c + dc[i];
 			
-			if(nr>=0 && nr<N && nc>=0 && nc<M) {
+			if(nr>=0 && nr<N && nc>=0 && nc<M && map[nr][nc] ==1) {
 				if(!visited[nr][nc]) {
 					if(dfs(nr, nc)) return true;
 				}
