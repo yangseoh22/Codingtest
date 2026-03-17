@@ -31,6 +31,8 @@ public class Main {
 	}
 	
 	public static boolean dfs (int r, int c) {
+		if(r<0 && r>=N && c<0 && c>=M && map[r][c] == 0) return false;
+		
 		if(r==N-1 && c==M-1) return true;
 	
 		visited[r][c] = true;
@@ -39,11 +41,7 @@ public class Main {
 			int nr = r + dr[i];
 			int nc = c + dc[i];
 			
-			if(nr>=0 && nr<N && nc>=0 && nc<M && map[nr][nc] ==1) {
-				if(!visited[nr][nc]) {
-					if(dfs(nr, nc)) return true;
-				}
-			}
+			if(dfs(nr, nc)) return true;
 		}
 		
 		return false;
