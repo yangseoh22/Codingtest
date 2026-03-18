@@ -2,7 +2,10 @@
  * 시간 : 124ms
  * 메모리 : 12,736kb
  * 전략 : dfs
- * 1.
+ * 1.map 입력
+ * 2. 현재 map의 최고 높이 좌표 찾기
+ * 3. 8방 탐색으로 이전 높이 이하이면, 현재 좌표와 높이를 가지고 다음 dfs로 재귀
+ * 4. 모든 탐색이 끝나면, 다시 현재를 기준으로 방문하지 않았으며 map 값이 가장 높은 좌표를 찾아 3번을 반복
  */
 
 import java.io.*;
@@ -25,26 +28,15 @@ public class Main {
 		
 		map = new int[N][M];
 		maxH = Integer.MIN_VALUE;
-		int startR = 0;
-		int startC = 0;
 		for(int r=0; r<N; r++) {
 			st = new StringTokenizer(br.readLine());
 			for(int c=0; c<M; c++) {
 				map[r][c] = Integer.parseInt(st.nextToken());
-//				if(maxH < map[r][c]) {
-//					maxH = map[r][c];
-//					startR = r;
-//					startC = c;
-//				}
 			}
 		}
 		
 		visited = new boolean[N][M];
-		
 		cnt = 0;
-
-//		cnt++;
-//		dfs(startR, startC, map[startR][startC]);
 
 		while(true) {
 			newX = -1;
