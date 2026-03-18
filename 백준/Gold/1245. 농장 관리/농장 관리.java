@@ -1,3 +1,10 @@
+/*
+ * 시간 : 124ms
+ * 메모리 : 12,736kb
+ * 전략 : dfs
+ * 1.
+ */
+
 import java.io.*;
 import java.util.*;
 
@@ -24,11 +31,11 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			for(int c=0; c<M; c++) {
 				map[r][c] = Integer.parseInt(st.nextToken());
-				if(maxH < map[r][c]) {
-					maxH = map[r][c];
-					startR = r;
-					startC = c;
-				}
+//				if(maxH < map[r][c]) {
+//					maxH = map[r][c];
+//					startR = r;
+//					startC = c;
+//				}
 			}
 		}
 		
@@ -36,8 +43,8 @@ public class Main {
 		
 		cnt = 0;
 
-		cnt++;
-		dfs(startR, startC, map[startR][startC]);
+//		cnt++;
+//		dfs(startR, startC, map[startR][startC]);
 
 		while(true) {
 			newX = -1;
