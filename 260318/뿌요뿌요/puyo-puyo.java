@@ -30,7 +30,7 @@ public class Main {
 		for(int r=0; r<N; r++) {
 			for(int c=0; c<N; c++) {
 				if(!visited[r][c]) {
-					size = 1;
+					size = 0;
 					dfs(r, c, map[r][c]);
 					if(size>=4) boomCnt++;
 					maxSize = Math.max(size, maxSize);
@@ -43,6 +43,7 @@ public class Main {
 	}
 	private static void dfs(int r, int c, int now) {
 		visited[r][c] = true;
+		size++;
 		
 		for(int i=0; i<4; i++) {
 			int nr = r + dr[i];
@@ -50,7 +51,6 @@ public class Main {
 			
 			if(nr>=0 && nc>=0 && nr<N && nc<N) {
 				if(!visited[nr][nc] && map[nr][nc] == now) {
-					size++;
 					dfs(nr, nc, now);
 				}
 			}
