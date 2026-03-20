@@ -21,12 +21,11 @@ public class Main {
 		int dir = 0;  // 남쪽
 		while(true) {
 			map[nowX][nowY] = snail;
-			if(snail == 0) break;
-			
+			if(snail == 1) break;
+			snail--;
+            
 			nowX += dr[dir];
 			nowY += dc[dir];
-			snail--;
-			if(snail == 0) break;
 			
 			// 맵을 벗어나거나 이미 채워진 곳을 만나면 회전
 			if(nowX<0 || nowY<0 || nowX>=N || nowY>=N || map[nowX][nowY] != 0) {
