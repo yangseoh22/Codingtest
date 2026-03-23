@@ -4,7 +4,7 @@ import java.io.*;
 public class Main {
 	static int[] dr = {-1, 1, 0, 0};
 	static int[] dc = {0, 0, -1, 1};
-	static int N, num, cnt;
+	static int N, num;
 	static int[][] map;
 	static boolean[][] V;
 	public static void main(String[] args) throws Exception {
@@ -52,11 +52,9 @@ public class Main {
 		System.out.println(sb);
 	}
 	private static void dfs(int r, int c) {
-		if(V[r][c]) return;
 		
 		map[r][c] = num;
 		V[r][c] = true;
-		cnt++;
 		
 		for(int i=0; i<4; i++) {
 			int nr = r + dr[i];
