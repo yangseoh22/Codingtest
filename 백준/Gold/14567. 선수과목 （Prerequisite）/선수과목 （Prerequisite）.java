@@ -5,7 +5,7 @@ public class Main {
 	static int N, M, semester;
 	static ArrayList<Integer>[] graph;
 	static int[] degree;
-	static Queue<int[]> q = new LinkedList<>();
+	static Queue<Integer> q = new LinkedList<>();
 	static int[] s;
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,22 +29,24 @@ public class Main {
 			graph[s].add(e);
 			degree[e]++;
 		}
-
+		
+		s = new int[N + 1];
 		for (int i = 1; i <= N; i++) {
 			if (degree[i] == 0) {
-				q.add(new int[] { i, 1 });
+				q.add(i);
+				s[i] = 1;  // 학기 수 저장
 			}
 		}
 		
-		s = new int[N+1];
 		while (!q.isEmpty()) {
-			int[] now = q.poll();
-			s[now[0]] = now[1];
-			for (int next : graph[now[0]]) {
+			int now = q.poll();
+			
+			for (int next : graph[now]) {
 				degree[next]--;
 
 				if (degree[next] == 0) {
-					q.add(new int[] { next, now[1] + 1 });
+					q.add(next);
+					s[next] = s[now] + 1;
 				}
 			}
 		}
