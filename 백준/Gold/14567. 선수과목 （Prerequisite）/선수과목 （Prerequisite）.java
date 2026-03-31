@@ -5,9 +5,8 @@ public class Main {
 	static int N, M, semester;
 	static ArrayList<Integer>[] graph;
 	static int[] degree;
-	static int[] visited;
 	static Queue<int[]> q = new LinkedList<>();
-
+	static int[] s;
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -31,30 +30,27 @@ public class Main {
 			degree[e]++;
 		}
 
-		semester = 1;
 		for (int i = 1; i <= N; i++) {
 			if (degree[i] == 0) {
-				q.add(new int[] { i, semester});
+				q.add(new int[] { i, 1 });
 			}
 		}
-
-		visited = new int[N + 1];
+		
+		s = new int[N+1];
 		while (!q.isEmpty()) {
 			int[] now = q.poll();
-			visited[now[0]] = now[1];
+			s[now[0]] = now[1];
 			for (int next : graph[now[0]]) {
-				if (visited[next] == 0) { // 방문하지 않은 노드라면
-					degree[next]--;
-					
-					if(degree[next] == 0) {
-						q.add(new int[] {next, now[1]+1});
-					}
+				degree[next]--;
+
+				if (degree[next] == 0) {
+					q.add(new int[] { next, now[1] + 1 });
 				}
 			}
 		}
 
 		for (int i = 1; i <= N; i++) {
-			sb.append(visited[i]).append(" ");
+			sb.append(s[i]).append(" ");
 		}
 		System.out.println(sb);
 	}
