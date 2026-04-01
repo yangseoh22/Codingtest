@@ -1,57 +1,51 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Main {
-
-	static ArrayList<Integer>[] A;
-	static boolean[] V;
-	public static void main(String[] args) throws Exception {
-		
+	static ArrayList<Integer>[] graph;
+	static int N, M, cnt=0;
+	static boolean[] visited;
+	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
+		StringBuilder sb = new StringBuilder();
 		
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
 		
-		A = new ArrayList[N+1];
-		
+		graph = new ArrayList[N+1];
 		for(int i=1; i<=N; i++) {
-			A[i] = new ArrayList<>();
+			graph[i] = new ArrayList<>();
 		}
 		
 		for(int i=0; i<M; i++) {
 			st = new StringTokenizer(br.readLine());
-			int u = Integer.parseInt(st.nextToken());
-			int v = Integer.parseInt(st.nextToken());
+			int s = Integer.parseInt(st.nextToken());
+			int e = Integer.parseInt(st.nextToken());
 			
-			// 양방향
-			A[u].add(v);
-			A[v].add(u);
+			graph[s].add(e);
+			graph[e].add(s);
 		}
 		
-		V = new boolean[N+1];
+		visited = new boolean[N+1];
 		
-		int cnt = 0;
 		for(int i=1; i<=N; i++) {
-			if(!V[i]) {
-				cnt++;
+			if(!visited[i]) {
 				DFS(i);
+				cnt++;
 			}
 		}
 		
 		System.out.println(cnt);
 	}
-	private static void DFS(int n) {
+	private static void DFS(int node) {
+		if(visited[node]) return;
+		visited[node] = true;
 		
-		if(V[n]) return;
-		V[n] = true;
-		
-		for(int v : A[n]) {
-			if(!V[v]) {
-				DFS(v);
-			}
+		for(int n : graph[node]) {
+			if(!visited[n]) DFS(n);
 		}
+		
 	}
-	
 	
 }
