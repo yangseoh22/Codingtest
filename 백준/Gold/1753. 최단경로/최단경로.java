@@ -53,7 +53,7 @@ public class Main {
 		
 		while(!pq.isEmpty()) {
 			Edge now = pq.poll();
-			int nowDist = now.weight;
+			
 			if(visited[now.to]) continue;
 			visited[now.to] = true;
 			
