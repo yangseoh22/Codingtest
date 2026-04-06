@@ -1,6 +1,5 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Solution {
 
@@ -8,48 +7,45 @@ public class Solution {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
-
+		
+		
 		int TC = Integer.parseInt(br.readLine());
-
-		for (int tc = 1; tc <= TC; tc++) {
-
+		
+		for(int t=1; t<=TC; t++) {
+			sb.append("#").append(t).append(" ");
 			int N = Integer.parseInt(br.readLine());
-
-			int[] trees = new int[N];
+			
+			int[] tree = new int[N];
 			int maxH = Integer.MIN_VALUE;
 			st = new StringTokenizer(br.readLine());
-			for (int i = 0; i < N; i++) {
-				trees[i] = Integer.parseInt(st.nextToken());
-				maxH = Math.max(maxH, trees[i]); // 최대 나무 높이
+			for(int i=0; i<N; i++) {
+				tree[i] = Integer.parseInt(st.nextToken());
+				maxH = Math.max(maxH, tree[i]);
 			}
 			
-			// 최대 높이와의 차이와 필요한 2일의 수, 1일의 수 계산
-			int one = 0;
+			int[] diff = new int[N];
+			for(int i=0; i<N; i++) {
+				diff[i] = Math.abs(maxH-tree[i]);
+			}
+			
 			int two = 0;
-			for (int t : trees) {
-				int diff = maxH - t;
-
-				two += diff / 2;
-				one += diff % 2;
+			int one = 0;
+			for(int i=0; i<N; i++) {
+				two += diff[i]/2;
+				one += diff[i]%2;
 			}
 			
-			// 둘의 차이가 1보다 크면 재분배
-			while (one+1<two) {  
+			while(one+1 < two) {
 				two--;
 				one+=2;
 			}
-
-			// 물을 주어야 할 날 계산
-			int day = 0;
-
-			if (one > two)
-				day = one * 2 - 1;
-			else if (one <= two)
-				day = two * 2;
-
-			sb.append("#").append(tc).append(" ").append(day).append("\n");
-
+			
+			if(one>two) sb.append(one*2-1);
+			else sb.append(two*2);
+			sb.append("\n");
 		}
+		
+		
 		System.out.println(sb);
 	}
 
