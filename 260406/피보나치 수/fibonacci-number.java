@@ -6,7 +6,7 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		int N = Integer.parseInt(br.readLine());
-		int[] dp = new int[N+1];
+		long[] dp = new long[N+1];
 		
 		dp[1] = 1;
 		dp[2] = 1;
