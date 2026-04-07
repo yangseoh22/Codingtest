@@ -2,24 +2,25 @@ import java.io.*;
 import java.util.Arrays;
 
 public class Main {
-	static long[] memo;
+	static int[] memo;
 	
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		int N = Integer.parseInt(br.readLine());
-		memo = new long[N+1];
+		memo = new int[N+1];
 		Arrays.fill(memo, -1);
+		memo[0] = 1;
+		memo[1] = 2;
 		
-		System.out.println(solve(N));
-	}
-	private static int solve(int n) {
-		if(n==0) memo[n] = 0;
-		else if(n==1) memo[n] = 2;
+		for(int i=2; i<=N; i++) {
+			if(memo[i] != -1) continue;
+			
+			if(i==2) memo[i] = (2*memo[i-1] + 3*memo[i-2]) % 10007;
+			else memo[i] = (2*memo[i-1] + 3*memo[i-2] + 2) % 10007;
+		}
 		
-		if(memo[n] != -1) return memo[n];
-		
-		return memo[n] = (solve(n-1)*3+1) % 1000000007L;
+		System.out.println(memo[N]);
 	}
 
 }
