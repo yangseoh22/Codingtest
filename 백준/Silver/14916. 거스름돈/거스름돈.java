@@ -3,19 +3,17 @@ import java.util.Arrays;
 
 public class Main {
 	static int[] dp;
-	static int cnt;
+	static int minCnt = Integer.MAX_VALUE;
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		int n = Integer.parseInt(br.readLine());
 		dp = new int[n+1];
 		Arrays.fill(dp, -1);
-		cnt = -1;
 		
 		int result = solve(n, 0);
 		
-		
-		System.out.println(result);
+		System.out.println(result==Integer.MAX_VALUE?-1:result);
 	}
 
 	private static int solve(int n, int c) {
@@ -23,7 +21,7 @@ public class Main {
 				
 		if(n<=1) {
 			if(n==0) {
-				cnt = c;
+				minCnt = Math.min(minCnt, c);
 			}
 			dp[n] = 0;
 		}
@@ -34,7 +32,7 @@ public class Main {
 			dp[n] = solve(n-5, c+1) + solve(n-2, c+1);
 		}
 		
-		return cnt;
+		return minCnt;
 	}
 
 }
