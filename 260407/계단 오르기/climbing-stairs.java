@@ -7,13 +7,16 @@ public class Main {
 		
 		int N = Integer.parseInt(br.readLine());
 		memo = new int[N+1];
-		
+		Arrays.fill(memo, -1);
 		System.out.println(step(N));
 	}
 
 	private static int step(int n) {
-		if(n<=1) {
+		if(memo[n] != -1)  return memo[n];
+		
+		if(n<=2) {
 			if(n==0) return 1;
+			else if(n==2) return step(n-2);
 			return 0;
 		}
 		else {
