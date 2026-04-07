@@ -19,7 +19,7 @@ public class Main {
 		
 		if(memo[n] != -1) return memo[n];
 		
-		return memo[n] = (solve(n-1)*3+1) % 1000000007;
+		return memo[n] = (solve(n-1)*3+1) % 1000000007L;
 	}
 
 }
