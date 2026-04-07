@@ -2,13 +2,13 @@ import java.io.*;
 import java.util.Arrays;
 
 public class Main {
-	static int[] memo;
+	static long[] memo;
 	
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		int N = Integer.parseInt(br.readLine());
-		memo = new int[N+1];
+		memo = new long[N+1];
 		Arrays.fill(memo, -1);
 		
 		System.out.println(solve(N));
