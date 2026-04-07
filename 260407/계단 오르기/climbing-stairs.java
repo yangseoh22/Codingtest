@@ -23,7 +23,7 @@ public class Main {
 		else {
 			memo[n] = step(n-2) + step(n-3);
 		}
-		return memo[n];
+		return memo[n] % 10007;
 	}
 	
 }
