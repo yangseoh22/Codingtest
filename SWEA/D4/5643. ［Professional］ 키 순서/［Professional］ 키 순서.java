@@ -1,26 +1,21 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Solution {
-	static int N, M;
 	static ArrayList<Integer>[] taller;
 	static ArrayList<Integer>[] shorter;
-	
-	public static void main(String[] args) throws IOException {
+	static int N, M;
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
 		
-		int TC = Integer.parseInt(br.readLine());
-		
-		for(int t=1; t<=TC; t++) {
-			N = Integer.parseInt(br.readLine());  //학생 수
-			M = Integer.parseInt(br.readLine());  //키 비교 횟수 = 간선 수
+		int T = Integer.parseInt(br.readLine());
+		for(int t=1; t<=T; t++) {
+			sb.append("#").append(t).append(" ");
+			
+			N = Integer.parseInt(br.readLine());
+			M = Integer.parseInt(br.readLine());
 			
 			taller = new ArrayList[N+1];
 			shorter = new ArrayList[N+1];
@@ -31,45 +26,41 @@ public class Solution {
 			
 			for(int i=0; i<M; i++) {
 				st = new StringTokenizer(br.readLine());
-				int a = Integer.parseInt(st.nextToken());
-				int b = Integer.parseInt(st.nextToken());
+				int from = Integer.parseInt(st.nextToken());
+				int to = Integer.parseInt(st.nextToken());
 				
-				taller[a].add(b);
-				shorter[b].add(a);
+				taller[from].add(to);
+				shorter[to].add(from);
 			}
 			
-			int result = 0;
-			// 모든 학생을 시작점으로 BFS
-			for(int s=1; s<=N; s++) {
-				int tallCnt = BFS(s, taller);
-				int shortCnt = BFS(s, shorter);
+			int tallCnt = 0;  // 나보다 큰 사람 수
+			int shortCnt = 0;  // 나보다 작은 사람 수
+			int result = 0;  // 나의 위치를 아는 사람 수
+			for(int i=1; i<=N; i++) {
+				tallCnt = BFS(i, taller);
+				shortCnt = BFS(i, shorter);
 				
-				// 자신의 위치 파악 가능
-				if(tallCnt + shortCnt == N-1) {
-					result++;
-				}
+				if(tallCnt + shortCnt == N-1) result++;
 			}
 			
-			sb.append("#").append(t).append(" ").append(result).append("\n");
+			sb.append(result).append("\n");
 		}
 		System.out.println(sb);
 	}
-
-	private static int BFS(int s, ArrayList<Integer>[] graph) {
+	private static int BFS(int start, ArrayList<Integer>[] graph) {
 		Queue<Integer> q = new LinkedList<>();
 		boolean[] visited = new boolean[N+1];
-		
-		q.add(s);
-		visited[s] = true;
+		q.add(start);
+		visited[start] = true;
 		
 		int cnt = 0;
 		while(!q.isEmpty()) {
-			int curr = q.poll();
+			int now = q.poll();
 			
-			for(int next : graph[curr]) {
+			for(int next : graph[now]) {
 				if(!visited[next]) {
-					q.add(next);
 					visited[next] = true;
+					q.add(next);
 					cnt++;
 				}
 			}
