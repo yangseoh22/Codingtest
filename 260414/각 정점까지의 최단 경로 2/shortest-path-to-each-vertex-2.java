@@ -21,8 +21,10 @@ public class Main {
 			int start = Integer.parseInt(st.nextToken());
 			int end = Integer.parseInt(st.nextToken());
 			int weight = Integer.parseInt(st.nextToken());
-			adj[start][end] = weight;  // 방향 그래프 -> 행렬
-		}
+			
+			// 중복으로 들어올 수 있으므로 -> 더 작은 값 채택
+			adj[start][end] = Math.min(weight, adj[start][end]);  // 방향 그래프 -> 행렬
+        }
 		
 		for(int i=1; i<=N; i++) {
 			adj[i][i] = 0;
