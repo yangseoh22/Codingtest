@@ -16,17 +16,14 @@ public class Solution {
 			int N = Integer.parseInt(br.readLine());
 			int M = Integer.parseInt(br.readLine());
 
-			int[][] taller = new int[N + 1][N + 1];
-			int[][] shorter = new int[N + 1][N + 1];
+			int[][] dist = new int[N + 1][N + 1];
 
 			// 거리 배열 초기화
 			for (int r = 1; r <= N; r++) {
 				for (int c = 1; c <= N; c++) {
-					taller[r][c] = MAX;
-					shorter[r][c] = MAX;
+					dist[r][c] = MAX;
 				}
-				taller[r][r] = 0;
-				shorter[r][r] = 0;
+				dist[r][r] = 0;
 			}
 
 			// 연결 내용 추가
@@ -35,26 +32,24 @@ public class Solution {
 				int from = Integer.parseInt(st.nextToken());
 				int to = Integer.parseInt(st.nextToken());
 
-				taller[from][to] = 1;
-				shorter[to][from] = 1;
+				dist[from][to] = 1;
 			}
 			
 			// 플로이드 워셜로 연결된 노드 표시
 			for (int k = 1; k <= N; k++) {
 				for (int i = 1; i <= N; i++) {
 					for (int j = 1; j <= N; j++) {
-						taller[i][j] = Math.min(taller[i][j], taller[i][k] + taller[k][j]);
-						shorter[i][j] = Math.min(shorter[i][j], shorter[i][k] + shorter[k][j]);
+						dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
 					}
 				}
 			}
 			
-			// 두 배열을 같이 봤을 때 각 행에 대해 둘 다 MAX인 곳이 없으면 자신의 키를 알 수 있음
+			// 행>열과 열>행을 같이 봤을 때 둘 다 MAX인 곳이 없으면 자신의 키를 알 수 있음
 			int result = 0;
 			for (int r = 1; r <= N; r++) {
 				boolean flag = false;
 				for (int c = 1; c <= N; c++) {
-					if (taller[r][c] != MAX || shorter[r][c] != MAX) {
+					if (dist[r][c] != MAX || dist[c][r] != MAX) {
 						flag = true;
 					}
 					else {
@@ -64,6 +59,7 @@ public class Solution {
 				}
 				if(flag) result++;
 			}
+			
 			sb.append(result).append("\n");
 		}
 		System.out.println(sb);
