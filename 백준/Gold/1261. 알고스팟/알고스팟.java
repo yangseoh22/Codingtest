@@ -1,78 +1,72 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Main {
-	public static class Node implements Comparable<Node>{
-		int x, y, w;
-		public Node(int x, int y, int w) {
-			this.x = x;
-			this.y = y;
-			this.w = w;
-		}
-		
-		@Override
-		public int compareTo(Node n) {
-			return this.w-n.w;
-		}
-	}
-	
-	static int N, M;
-	static final int INF = (int)1e9;
+	static int[][] dist;
 	static int[] dr = {-1, 1, 0, 0};
 	static int[] dc = {0, 0, -1, 1};
-	static int[][] map;
-	static int[][] dist;
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
+		StringBuilder sb = new StringBuilder();
 		
-		M = Integer.parseInt(st.nextToken());
-		N = Integer.parseInt(st.nextToken());
-	
-		map = new int[N][M];
-		dist = new int[N][M];
+		int M = Integer.parseInt(st.nextToken());
+		int N = Integer.parseInt(st.nextToken());
+		int[][] map = new int[N][M];
+		int[][] dist = new int[N][M];
+		
 		for(int r=0; r<N; r++) {
-			String line = br.readLine();
+			String lines = br.readLine();
 			for(int c=0; c<M; c++) {
-				map[r][c] = line.charAt(c) - '0';
-				dist[r][c] = INF;
+				map[r][c] = lines.charAt(c) - '0';
 			}
 		}
 		
-		// (0, 0)에서 (N, M)으로
-		dijk(0, 0);
+		for(int r=0; r<N; r++) {
+			for(int c=0; c<M; c++) {
+				dist[r][c] = Integer.MAX_VALUE;
+			}
+		}
 		
-		System.out.println(dist[N-1][M-1]);
-	}
-	private static void dijk(int startR, int startC) {
+		// 다익스트라 진행
 		PriorityQueue<Node> pq = new PriorityQueue<>();
-		pq.offer(new Node(startR, startC, 0));
-		dist[startR][startC] = 0;
+		dist[0][0] = 0;
+		pq.add(new Node(0, 0, 0));
 		
 		while(!pq.isEmpty()) {
-			Node curr = pq.poll();
-			int cx = curr.x;
-			int cy = curr.y;
-			int cw = curr.w;
+			Node now = pq.poll();
 			
-			if(dist[cx][cy] != cw) continue;
-			
-			if(cx==N-1 && cy==M-1) break;
+			if(now.d > dist[now.x][now.y]) continue;
 			
 			for(int i=0; i<4; i++) {
-				int nx = cx + dr[i];
-				int ny = cy + dc[i];
+				int nx = now.x + dr[i];
+				int ny = now.y + dc[i];
 				
-				if(nx>=0 && ny>=0 && nx<N && ny<M) {
-					int newDist = cw + map[nx][ny];
-					if(dist[nx][ny] > newDist) {
+				if(nx>=0 && nx<N && ny>=0 && ny<M) {
+					int newDist = dist[now.x][now.y] + map[nx][ny];
+					if(dist[nx][ny]>newDist) {
 						dist[nx][ny] = newDist;
 						pq.add(new Node(nx, ny, newDist));
 					}
 				}
 			}
 		}
-		
-	}
 
+		sb.append(dist[N-1][M-1]);
+		System.out.println(sb);
+	}
+	
+	public static class Node implements Comparable<Node>{
+		int x, y, d;
+		public Node(int x, int y, int d) {
+			this.x = x;
+			this.y = y;
+			this.d = d;
+		}
+		
+		@Override
+		public int compareTo(Node n){
+			return this.d - n.d;
+		}
+	}
 }
