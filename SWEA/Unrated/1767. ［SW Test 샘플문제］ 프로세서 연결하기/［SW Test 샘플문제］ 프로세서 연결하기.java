@@ -19,68 +19,61 @@ public class Solution {
 			cores = new ArrayList<>();
 			maxCore = 0;
 			minWire = Integer.MAX_VALUE;
-
+			
 			for(int r=0; r<N; r++) {
 				st = new StringTokenizer(br.readLine());
 				for(int c=0; c<N; c++) {
 					map[r][c] = Integer.parseInt(st.nextToken());
 					
 					if(map[r][c] == 1) {
-						if(r==0 || c==0 || r==N-1 || c==N-1) {
-							maxCore++;
-						}
+						if(r==0 || c==0 || r==N-1 || c==N-1) maxCore++;
 						else cores.add(new Points(r, c));
 					}
 				}
 			}
 			
+			// 다음 코어 번호, 현재 연결된 코어 개수, 깔린 전선 개수
 			DFS(0, maxCore, 0);
 			
 			sb.append("#").append(t).append(" ").append(minWire).append("\n");
 		}
 		System.out.println(sb);
 	}
-	
+
+
 	private static void DFS(int idx, int coreCnt, int wireCnt) {
 		if(idx == cores.size()) {
-			if(maxCore < coreCnt) {
+			if(coreCnt>maxCore) {
 				maxCore = coreCnt;
 				minWire = wireCnt;
 			}
-			else if(maxCore==coreCnt) {
+			else if(coreCnt==maxCore) {
 				minWire = Math.min(minWire, wireCnt);
 			}
-			
 			return;
 		}
 		
 		Points now = cores.get(idx);
-		
 		// 1. 코어 연결
 		for(int d=0; d<4; d++) {
-			// 연결 가능하다면 -> 연결
 			if(canConnect(now.x, now.y, d)) {
-				// 1-1. 전선 깔기
-				int lenCnt = setWire(now.x, now.y, d, 2);
-				
-				// 1-2. 다음 호출
-				DFS(idx+1, coreCnt+1, wireCnt+lenCnt);
-				
-				// 1-3. 전선 회수
+				int len = setWire(now.x, now.y, d, 2);  // 깔은 전선 개수 - 전선은 2
+				DFS(idx+1, coreCnt+1, wireCnt+len);
 				setWire(now.x, now.y, d, 0);
 			}
 		}
 		
-		// 2. 코어 연결 안하기
+		// 2. 코어 연결 안함
 		DFS(idx+1, coreCnt, wireCnt);
 	}
+
 
 	private static int setWire(int x, int y, int dir, int val) {
 		int nx = x + dr[dir];
 		int ny = y + dc[dir];
 		
-		int cnt = 0;  // 전선 개수
-		while(nx>=0 && nx<N && ny>=0 && ny<N) {
+		int cnt = 0;
+		while(nx>=0 && ny>=0 && nx<N && ny<N) {
 			map[nx][ny] = val;
 			cnt++;
 			nx += dr[dir];
@@ -90,12 +83,13 @@ public class Solution {
 		return cnt;
 	}
 
+
 	private static boolean canConnect(int x, int y, int dir) {
 		int nx = x + dr[dir];
 		int ny = y + dc[dir];
 		
-		while(nx>=0 && nx<N && ny>=0 && ny<N) {
-			if(map[nx][ny] != 0) return false;  // 다른 게 존재
+		while(nx>=0 && ny>=0 && nx<N && ny<N) {
+			if(map[nx][ny] != 0) return false;
 			
 			nx += dr[dir];
 			ny += dc[dir];
@@ -103,6 +97,7 @@ public class Solution {
 		
 		return true;
 	}
+
 
 	public static class Points{
 		int x, y;
