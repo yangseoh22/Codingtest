@@ -11,11 +11,12 @@ public class Solution {
 		int TC = Integer.parseInt(br.readLine());
 		
 		for(int t=1; t<=TC; t++) {
+			
 			int N = Integer.parseInt(br.readLine());
 			
 			int[] tree = new int[N];
-			st = new StringTokenizer(br.readLine());
 			int maxH = Integer.MIN_VALUE;
+			st = new StringTokenizer(br.readLine());
 			for(int i=0; i<N; i++) {
 				tree[i] = Integer.parseInt(st.nextToken());
 				maxH = Math.max(maxH, tree[i]);
@@ -30,7 +31,7 @@ public class Solution {
 				one += diff%2;
 			}
 			
-			while(two-one > 1) {
+			while(two - one > 1) {
 				two -= 1;
 				one += 2;
 			}
