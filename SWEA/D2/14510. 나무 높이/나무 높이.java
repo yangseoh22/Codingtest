@@ -9,9 +9,8 @@ public class Solution {
 		StringBuilder sb = new StringBuilder();
 		
 		int TC = Integer.parseInt(br.readLine());
-		
 		for(int t=1; t<=TC; t++) {
-			
+		
 			int N = Integer.parseInt(br.readLine());
 			
 			int[] tree = new int[N];
@@ -22,8 +21,8 @@ public class Solution {
 				maxH = Math.max(maxH, tree[i]);
 			}
 			
-			int one = 0;
 			int two = 0;
+			int one = 0;
 			for(int i=0; i<N; i++) {
 				int diff = maxH - tree[i];
 				
@@ -42,7 +41,6 @@ public class Solution {
 			
 			sb.append("#").append(t).append(" ").append(day).append("\n");
 		}
-		
 		System.out.println(sb);
 	}
 
