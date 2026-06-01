@@ -14,7 +14,7 @@ public class Main {
         for(int i=0; i<N; i++) {
             String str = sc.next();
             
-            if(str.startsWith(T)) {  // T가 포함되어 있다면
+            if(str.startsWith(T)) {  // T로 시작한다면
                 arr.add(str);
             }
         }
