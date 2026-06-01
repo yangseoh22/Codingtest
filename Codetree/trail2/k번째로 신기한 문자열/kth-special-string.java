@@ -14,20 +14,13 @@ public class Main {
         for(int i=0; i<N; i++) {
             String str = sc.next();
             
-            if(includeT(str, T)) {  // T가 포함되어 있다면
+            if(str.startsWith(T)) {  // T가 포함되어 있다면
                 arr.add(str);
             }
         }
         
         Collections.sort(arr);
         System.out.println(arr.get(K-1));
-    }
-
-    private static boolean includeT(String str, String t) {
-        for(int j=0; j<t.length(); j++) {
-                if(str.charAt(j) != t.charAt(j)) return false;
-        }
-        return true;
     }
 
 }
