@@ -1,4 +1,3 @@
-import java.util.*;
 import java.io.*;
 
 public class Solution {
@@ -17,52 +16,38 @@ public class Solution {
 			
 			int[][] map = new int[N][N];
 			int dir = 0;
-			int now = 1;
 			int x = 0;
 			int y = 0;
 			
-			while(true) {
-				// 다 채웠으면 종료 및 출력
-				if(isFinish(map)) {
-					for(int r=0; r<N; r++) {
-						for(int c=0; c<N; c++) {
-							sb.append(map[r][c]).append(" ");
-						}
-						sb.append("\n");
-					}
-					break;
+			for(int n=1; n<=N*N; n++) {
+				map[x][y] = n;
+				
+				// 다음 좌표 계산
+				int nx = x + dx[dir];
+				int ny = y + dy[dir];
+				
+				// 범위 내가 아니거나 이미 채워져 있으면
+				if(!isRange(nx, ny) || map[nx][ny] != 0) {
+					// 회전
+					dir = (dir+1) % 4;
+					nx = x + dx[dir];
+					ny = y + dy[dir];
 				}
 				
-				// 범위 내이며 빈칸이면 숫자 채우기
-				if(isRange(x, y) && map[x][y] == 0) {
-					map[x][y] = now;
-					
-					now++;
-					x += dx[dir];
-					y += dy[dir];
-				} else {  // 범위를 벗어났다면 회전 후 채우기
-					// 이전 좌표에서 회전한 좌표 계산
-					x -= dx[dir];
-					y -= dy[dir];
-					
-					dir = (dir + 1) % 4;
-					x += dx[dir];
-					y += dy[dir];
-				}
+				// 좌표 갱신
+				x = nx;
+				y = ny;
 			}
+			
+			for(int r=0; r<N; r++) {
+				for(int c=0; c<N; c++) {
+					sb.append(map[r][c]).append(" ");
+				}
+				sb.append("\n");
+			}
+			
 		}
 		System.out.println(sb);
-	}
-
-	// 숫자가 다 채워졌는가
-	private static boolean isFinish(int[][] map) {
-		for(int r=0; r<N; r++) {
-			for(int c=0; c<N; c++) {
-				if(map[r][c] == 0) return false;
-			}
-		}
-		
-		return true;
 	}
 	
 	// 맵 범위 내의 좌표인가
@@ -71,7 +56,4 @@ public class Solution {
 		
 		return true;
 	}
-
-	
-
 }
