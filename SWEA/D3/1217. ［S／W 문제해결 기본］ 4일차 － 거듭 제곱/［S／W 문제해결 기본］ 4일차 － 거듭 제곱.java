@@ -12,20 +12,18 @@ public class Solution {
 			int N = sc.nextInt();
 			int M = sc.nextInt();
 			
-			int result = squared(N, M, 1);
+			int result = squared(N, M);
 			
 			System.out.println("#" + TC + " " + result);
 		}
 	}
 
-	private static int squared(int n, int m, int num) {
+	private static int squared(int n, int m) {
+
+		if(m == 0)
+			return 1;
 		
-		num *= n;
-		
-		if(m <= 1)
-			return num;
-		
-		return squared(n, m-1, num);
+		return n * squared(n, m-1);
 	}
 
 }
